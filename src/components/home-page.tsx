@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
@@ -6,7 +7,7 @@ import PartnerLogo from "../assets/partnerslogo.svg"
 import SBOLogo from "../assets/SBO_Logo.svg"
 import IconCloud from "./magicui/icon-cloud"
 import { IconCloudHome } from "./magicui/icon-cloud-home"
-import ConfettiText from "./magicui/confetti-text"
+import { SVGProps } from "react"
 
 export function HomePage() {
   return (
@@ -319,7 +320,7 @@ export function HomePage() {
   )
 }
 
-function MountainIcon(props) {
+function MountainIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -339,7 +340,7 @@ function MountainIcon(props) {
 }
 
 
-function TrendingUpIcon(props) {
+function TrendingUpIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -360,7 +361,7 @@ function TrendingUpIcon(props) {
 }
 
 
-function XIcon(props) {
+function XIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
