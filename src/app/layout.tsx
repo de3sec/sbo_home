@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import './globals.css'
 import { Metadata } from 'next'
 import FormbricksProvider from "./formbricks";
+import { Suspense } from 'react'
 
 const fontHeading = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -30,7 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <FormbricksProvider />
+      <Suspense>
+        <FormbricksProvider />
+      </Suspense>
       <body 
         className={cn(
           'antialiased',

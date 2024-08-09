@@ -251,7 +251,7 @@ export function HomePage() {
             <table
               align="center"
               width="100%"
-              border="0"
+              border={0}
               cellPadding="0"
               cellSpacing="0"
               role="presentation"
@@ -276,7 +276,7 @@ export function HomePage() {
             <table
               align="center"
               width="100%"
-              border="0"
+              border={0}
               cellPadding="0"
               cellSpacing="0"
               role="presentation"
