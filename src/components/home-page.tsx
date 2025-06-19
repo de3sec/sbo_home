@@ -159,8 +159,8 @@ export function HomePage() {
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h4 className="text-lg font-semibold">John Doe</h4>
-                      <p className="text-muted-foreground">CEO, Acme Inc.</p>
+                      <h4 className="text-lg font-semibold">Arushi</h4>
+                      <p className="text-muted-foreground">Founder, Aura Bloom Shop</p>
                     </div>
                   </div>
                   <p className="text-muted-foreground">
@@ -177,7 +177,7 @@ export function HomePage() {
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h4 className="text-lg font-semibold">Jane Smith</h4>
+                      <h4 className="text-lg font-semibold">Subhash</h4>
                       <p className="text-muted-foreground">CMO, Widgets Inc.</p>
                     </div>
                   </div>
@@ -306,12 +306,12 @@ export function HomePage() {
         </div>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">&copy; 2024 SBO Tech. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">&copy; 2025 SBO Tech. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
+          <Link href="/terms-of-service" className="text-xs hover:underline underline-offset-4" prefetch={false}>
             Terms of Service
           </Link>
-          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
+          <Link href="/privacy" className="text-xs hover:underline underline-offset-4" prefetch={false}>
             Privacy
           </Link>
         </nav>
