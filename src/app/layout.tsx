@@ -5,6 +5,8 @@ import './globals.css'
 import { Metadata } from 'next'
 import FormbricksProvider from "./formbricks";
 import { Suspense } from 'react'
+import { Providers } from '@/components/providers/Providers'
+import { CookieConsent } from '@/components/cookie-consent'
 
 const fontHeading = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -31,9 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Suspense>
+      {/* <Suspense>
         <FormbricksProvider />
-      </Suspense>
+      </Suspense> */}
       <body 
         className={cn(
           'antialiased',
@@ -41,7 +43,10 @@ export default function RootLayout({
           fontBody.variable
         )}
       >
-        {children}
+        <Providers>
+          {children}
+          <CookieConsent />
+        </Providers>
       </body>
     </html>
   );

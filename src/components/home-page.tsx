@@ -4,35 +4,15 @@ import { Card } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Image from "next/image"
 import PartnerLogo from "../assets/partnerslogo.svg"
-import SBOLogo from "../assets/SBO_Logo.svg"
+import { Layout } from "./shared/layout"
 import IconCloud from "./magicui/icon-cloud"
 import { IconCloudHome } from "./magicui/icon-cloud-home"
 import { SVGProps } from "react"
+import { NewsletterSignup } from "./newsletter-signup"
 
 export function HomePage() {
   return (
-    <div className="flex flex-col min-h-[100dvh]">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link href="#" className="flex items-center justify-center p-4" prefetch={false}>
-          <Image className="mt-4" height={60} width={60} alt="logo" src={SBOLogo}></Image>
-          <span className="pt-2">SBO Tech</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link href="#services" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            Services
-          </Link>
-          {/* <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-          Work
-        </Link> */}
-          <Link href="https://smallboxoffice.com" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            About
-          </Link>
-          <Link href="#contact" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            Contact
-          </Link>
-        </nav>
-      </header>
-      <main className="flex-1">
+    <Layout>
         <section className="w-full py-12 flex justify-center items-center">
           <div className="container w-full px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_550px] lg:gap-12 xl:grid-cols-[1fr_650px]">
@@ -211,7 +191,7 @@ export function HomePage() {
                 Get a Quote
               </Link>
               <Link
-                href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
+                href="/contact"
                 className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >
@@ -222,7 +202,23 @@ export function HomePage() {
 
 
         </section>
-        <div className="w-full flex justify-center items-center pb-20 bg-muted">
+        
+        {/* Newsletter Signup Section */}
+        <section className="w-full py-12 md:py-16 bg-muted">
+          <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+            <div className="text-center space-y-6">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+                Stay Updated with SBO Tech
+              </h2>
+              <p className="text-muted-foreground md:text-lg max-w-2xl mx-auto">
+                Get the latest insights on Shopify development, app updates, and industry trends delivered to your inbox.
+              </p>
+              <NewsletterSignup />
+            </div>
+          </div>
+        </section>
+        
+        {/* <div className="w-full flex justify-center items-center pb-20 bg-muted">
           <a
             href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
             style={{
@@ -303,20 +299,8 @@ export function HomePage() {
             </table>
           </a>
 
-        </div>
-      </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">&copy; 2025 SBO Tech. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link href="/terms-of-service" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-            Terms of Service
-          </Link>
-          <Link href="/privacy" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-            Privacy
-          </Link>
-        </nav>
-      </footer>
-    </div>
+        </div> */}
+    </Layout>
   )
 }
 
