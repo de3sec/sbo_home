@@ -14,6 +14,7 @@ import {
   XCircleIcon,
   ClockIcon,
   StarIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline"
 
 interface BlogPost {
@@ -37,6 +38,26 @@ interface BlogPost {
   slug?: string
   createdAt: string
   updatedAt: string
+}
+
+// Add this interface for the form data
+interface BlogPostFormData {
+  title: string
+  excerpt: string
+  content: string
+  author: {
+    name: string
+    avatar: string
+    role: string
+    bio: string
+  }
+  publishedAt: string
+  readTime: string
+  category: string
+  featured: boolean
+  image: string
+  tags: string[]
+  status: 'draft' | 'published' | 'archived'
 }
 
 const categories = ['All', 'Development', 'Performance', 'AI & Innovation', 'Tutorial', 'Business', 'Security']
@@ -165,6 +186,21 @@ export function BlogManagementEnhanced() {
     } catch (err) {
       console.error('Error toggling featured:', err)
       alert('Failed to toggle featured status')
+    }
+  }
+
+  const handleSavePost = async (postData: BlogPostFormData) => {
+    try {
+      if (editingPost) {
+        // Update existing post
+        await blogApi.update(editingPost._id, postData)
+      } else {
+        // Create new post
+        await blogApi.create(postData)
+      }
+      fetchBlogPosts()
+    } catch (err: any) {
+      throw new Error(err.message || 'Failed to save blog post')
     }
   }
 
@@ -477,38 +513,350 @@ export function BlogManagementEnhanced() {
       {/* Modals would go here - CreatePostModal, EditPostModal */}
       {/* For now, these are placeholders */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Create New Blog Post</h2>
-            <p className="text-muted-foreground mb-4">This would open a full blog post creation form.</p>
-            <button
-              onClick={() => setShowCreateModal(false)}
-              className="px-4 py-2 bg-muted text-muted-foreground rounded-md hover:bg-muted/80"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <BlogPostModal
+          post={editingPost}
+          onClose={() => {
+            setShowCreateModal(false)
+            setEditingPost(null)
+          }}
+          onSave={handleSavePost}
+        />
       )}
 
       {showEditModal && editingPost && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit Blog Post</h2>
-            <p className="text-muted-foreground mb-2">Editing: {editingPost.title}</p>
-            <p className="text-muted-foreground mb-4">This would open a full blog post editing form.</p>
+        <BlogPostModal
+          post={editingPost}
+          onClose={() => {
+            setShowEditModal(false)
+            setEditingPost(null)
+          }}
+          onSave={handleSavePost}
+        />
+      )}
+    </div>
+  )
+} 
+
+interface BlogPostModalProps {
+  post?: BlogPost | null
+  onClose: () => void
+  onSave: (post: BlogPostFormData) => void
+}
+
+function BlogPostModal({ post, onClose, onSave }: BlogPostModalProps) {
+  const [formData, setFormData] = useState<BlogPostFormData>({
+    title: post?.title || '',
+    excerpt: post?.excerpt || '',
+    content: post?.content || '',
+    author: {
+      name: post?.author?.name || 'SBO Tech Team',
+      avatar: post?.author?.avatar || '/placeholder-avatar.svg',
+      role: post?.author?.role || 'Lead Developer',
+      bio: post?.author?.bio || 'Expert in Shopify app development.'
+    },
+    publishedAt: post?.publishedAt ? new Date(post.publishedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+    readTime: post?.readTime || '5 min read',
+    category: post?.category || 'Development',
+    featured: post?.featured || false,
+    image: post?.image || '/hero-image.jpg',
+    tags: post?.tags || [],
+    status: post?.status || 'draft'
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [newTag, setNewTag] = useState('')
+
+  const categories = ['Development', 'Performance', 'AI & Innovation', 'Tutorial', 'Business', 'Security']
+  const statuses = ['draft', 'published', 'archived']
+
+  const handleChange = (field: string, value: any) => {
+    if (field.includes('.')) {
+      const [parent, child] = field.split('.')
+      setFormData(prev => ({
+        ...prev,
+        [parent]: {
+          ...(prev[parent as keyof BlogPostFormData] as any),
+          [child]: value
+        }
+      }))
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }))
+    }
+  }
+
+  const handleAddTag = () => {
+    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        tags: [...prev.tags, newTag.trim()]
+      }))
+      setNewTag('')
+    }
+  }
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    try {
+      await onSave(formData)
+      onClose()
+    } catch (err: any) {
+      setError(err.message || 'Failed to save blog post')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="bg-background rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">
+            {post ? 'Edit Blog Post' : 'Create New Blog Post'}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+        </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-red-800 text-sm">{error}</p>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Information */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="block text-sm font-medium mb-2">Title *</label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => handleChange('title', e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Category *</label>
+              <select
+                value={formData.category}
+                onChange={(e) => handleChange('category', e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Excerpt *</label>
+            <textarea
+              value={formData.excerpt}
+              onChange={(e) => handleChange('excerpt', e.target.value)}
+              required
+              rows={3}
+              className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Content *</label>
+            <textarea
+              value={formData.content}
+              onChange={(e) => handleChange('content', e.target.value)}
+              required
+              rows={10}
+              className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+            />
+          </div>
+
+          {/* Author Information */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Author Information</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium mb-2">Name</label>
+                <input
+                  type="text"
+                  value={formData.author.name}
+                  onChange={(e) => handleChange('author.name', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Role</label>
+                <input
+                  type="text"
+                  value={formData.author.role}
+                  onChange={(e) => handleChange('author.role', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Avatar URL</label>
+                <input
+                  type="text"
+                  value={formData.author.avatar}
+                  onChange={(e) => handleChange('author.avatar', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Bio</label>
+                <input
+                  type="text"
+                  value={formData.author.bio}
+                  onChange={(e) => handleChange('author.bio', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Metadata */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Metadata</h3>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <label className="block text-sm font-medium mb-2">Published Date</label>
+                <input
+                  type="date"
+                  value={formData.publishedAt}
+                  onChange={(e) => handleChange('publishedAt', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Read Time</label>
+                <input
+                  type="text"
+                  value={formData.readTime}
+                  onChange={(e) => handleChange('readTime', e.target.value)}
+                  placeholder="5 min read"
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Status</label>
+                <select
+                  value={formData.status}
+                  onChange={(e) => handleChange('status', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  {statuses.map(status => (
+                    <option key={status} value={status}>{status.charAt(0).toUpperCase() + status.slice(1)}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Image and Featured */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Display Settings</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium mb-2">Featured Image URL</label>
+                <input
+                  type="text"
+                  value={formData.image}
+                  onChange={(e) => handleChange('image', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  checked={formData.featured}
+                  onChange={(e) => handleChange('featured', e.target.checked)}
+                  className="w-4 h-4 text-primary border-input rounded focus:ring-primary focus:ring-2"
+                />
+                <label htmlFor="featured" className="text-sm font-medium">Featured Post</label>
+              </div>
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Tags</h3>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newTag}
+                  onChange={(e) => setNewTag(e.target.value)}
+                  placeholder="Add a tag"
+                  className="flex-1 px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
+                />
+                <button
+                  type="button"
+                  onClick={handleAddTag}
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-muted rounded-full text-sm"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTag(tag)}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <XMarkIcon className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="border-t pt-6 flex justify-end gap-3">
             <button
-              onClick={() => {
-                setShowEditModal(false)
-                setEditingPost(null)
-              }}
-              className="px-4 py-2 bg-muted text-muted-foreground rounded-md hover:bg-muted/80"
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 border border-input bg-background text-foreground rounded-md hover:bg-accent"
             >
-              Close
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+            >
+              {loading ? 'Saving...' : (post ? 'Update Post' : 'Create Post')}
             </button>
           </div>
-        </div>
-      )}
+        </form>
+      </div>
     </div>
   )
 } 

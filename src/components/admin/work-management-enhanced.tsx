@@ -12,6 +12,7 @@ import {
   XCircleIcon,
   ClockIcon,
   PlayIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline"
 
 interface Project {
@@ -31,6 +32,22 @@ interface Project {
   slug?: string
   createdAt: string
   updatedAt: string
+}
+
+// Add this interface for the form data
+interface ProjectFormData {
+  title: string
+  category: string
+  description: string
+  longDescription: string
+  features: string[]
+  technologies: string[]
+  image: string
+  status: 'live' | 'in-development' | 'completed' | 'archived'
+  client: string
+  impact: string
+  timeline: string
+  team: string
 }
 
 const categories = ['All', 'Product Management', 'Analytics & Tracking', 'Catalog Management', 'Logistics & Fulfillment', 'Architecture', 'Operations']
@@ -136,6 +153,21 @@ export function WorkManagementEnhanced() {
     } catch (err) {
       console.error('Error updating status:', err)
       alert('Failed to update status')
+    }
+  }
+
+  const handleSaveProject = async (projectData: ProjectFormData) => {
+    try {
+      if (editingProject) {
+        // Update existing project
+        await projectApi.update(editingProject._id, projectData)
+      } else {
+        // Create new project
+        await projectApi.create(projectData)
+      }
+      fetchProjects()
+    } catch (err: any) {
+      throw new Error(err.message || 'Failed to save project')
     }
   }
 
@@ -452,38 +484,364 @@ export function WorkManagementEnhanced() {
       {/* Modals would go here - CreateProjectModal, EditProjectModal */}
       {/* For now, these are placeholders */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Create New Project</h2>
-            <p className="text-muted-foreground mb-4">This would open a full project creation form.</p>
-            <button
-              onClick={() => setShowCreateModal(false)}
-              className="px-4 py-2 bg-muted text-muted-foreground rounded-md hover:bg-muted/80"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <ProjectModal
+          project={editingProject}
+          onClose={() => {
+            setShowCreateModal(false)
+            setEditingProject(null)
+          }}
+          onSave={handleSaveProject}
+        />
       )}
 
       {showEditModal && editingProject && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit Project</h2>
-            <p className="text-muted-foreground mb-2">Editing: {editingProject.title}</p>
-            <p className="text-muted-foreground mb-4">This would open a full project editing form.</p>
+        <ProjectModal
+          project={editingProject}
+          onClose={() => {
+            setShowEditModal(false)
+            setEditingProject(null)
+          }}
+          onSave={handleSaveProject}
+        />
+      )}
+    </div>
+  )
+} 
+
+interface ProjectModalProps {
+  project?: Project | null
+  onClose: () => void
+  onSave: (project: ProjectFormData) => void
+}
+
+function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
+  const [formData, setFormData] = useState<ProjectFormData>({
+    title: project?.title || '',
+    category: project?.category || 'Product Management',
+    description: project?.description || '',
+    longDescription: project?.longDescription || '',
+    features: project?.features || [],
+    technologies: project?.technologies || [],
+    image: project?.image || '/hero-image.jpg',
+    status: project?.status || 'in-development',
+    client: project?.client || '',
+    impact: project?.impact || '',
+    timeline: project?.timeline || '',
+    team: project?.team || ''
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [newFeature, setNewFeature] = useState('')
+  const [newTechnology, setNewTechnology] = useState('')
+
+  const categories = ['Product Management', 'Analytics & Tracking', 'Catalog Management', 'Logistics & Fulfillment', 'Architecture', 'Operations']
+  const statuses = ['live', 'in-development', 'completed', 'archived']
+
+  const handleChange = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleAddFeature = () => {
+    if (newFeature.trim() && !formData.features.includes(newFeature.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        features: [...prev.features, newFeature.trim()]
+      }))
+      setNewFeature('')
+    }
+  }
+
+  const handleRemoveFeature = (featureToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      features: prev.features.filter(feature => feature !== featureToRemove)
+    }))
+  }
+
+  const handleAddTechnology = () => {
+    if (newTechnology.trim() && !formData.technologies.includes(newTechnology.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        technologies: [...prev.technologies, newTechnology.trim()]
+      }))
+      setNewTechnology('')
+    }
+  }
+
+  const handleRemoveTechnology = (techToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      technologies: prev.technologies.filter(tech => tech !== techToRemove)
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    try {
+      await onSave(formData)
+      onClose()
+    } catch (err: any) {
+      setError(err.message || 'Failed to save project')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="bg-background rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">
+            {project ? 'Edit Project' : 'Create New Project'}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+        </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-red-800 text-sm">{error}</p>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Information */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="block text-sm font-medium mb-2">Title *</label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => handleChange('title', e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Category *</label>
+              <select
+                value={formData.category}
+                onChange={(e) => handleChange('category', e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Short Description *</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => handleChange('description', e.target.value)}
+              required
+              rows={3}
+              className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Long Description *</label>
+            <textarea
+              value={formData.longDescription}
+              onChange={(e) => handleChange('longDescription', e.target.value)}
+              required
+              rows={8}
+              className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+            />
+          </div>
+
+          {/* Project Details */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Project Details</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium mb-2">Client *</label>
+                <input
+                  type="text"
+                  value={formData.client}
+                  onChange={(e) => handleChange('client', e.target.value)}
+                  required
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Timeline *</label>
+                <input
+                  type="text"
+                  value={formData.timeline}
+                  onChange={(e) => handleChange('timeline', e.target.value)}
+                  required
+                  placeholder="e.g., 3 months"
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Team Size *</label>
+                <input
+                  type="text"
+                  value={formData.team}
+                  onChange={(e) => handleChange('team', e.target.value)}
+                  required
+                  placeholder="e.g., 4 developers"
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Impact *</label>
+                <input
+                  type="text"
+                  value={formData.impact}
+                  onChange={(e) => handleChange('impact', e.target.value)}
+                  required
+                  placeholder="e.g., 40% increase in conversion"
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Status and Image */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Display Settings</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium mb-2">Status</label>
+                <select
+                  value={formData.status}
+                  onChange={(e) => handleChange('status', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  {statuses.map(status => (
+                    <option key={status} value={status}>
+                      {status === 'in-development' ? 'In Development' : status.charAt(0).toUpperCase() + status.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Featured Image URL</label>
+                <input
+                  type="text"
+                  value={formData.image}
+                  onChange={(e) => handleChange('image', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Features */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Key Features</h3>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newFeature}
+                  onChange={(e) => setNewFeature(e.target.value)}
+                  placeholder="Add a feature"
+                  className="flex-1 px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddFeature())}
+                />
+                <button
+                  type="button"
+                  onClick={handleAddFeature}
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="space-y-2">
+                {formData.features.map((feature, index) => (
+                  <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded-md">
+                    <span className="flex-1 text-sm">{feature}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFeature(feature)}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <XMarkIcon className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Technologies */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-4">Technologies Used</h3>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newTechnology}
+                  onChange={(e) => setNewTechnology(e.target.value)}
+                  placeholder="Add a technology"
+                  className="flex-1 px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTechnology())}
+                />
+                <button
+                  type="button"
+                  onClick={handleAddTechnology}
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.technologies.map((tech, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-muted rounded-full text-sm"
+                  >
+                    {tech}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTechnology(tech)}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <XMarkIcon className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="border-t pt-6 flex justify-end gap-3">
             <button
-              onClick={() => {
-                setShowEditModal(false)
-                setEditingProject(null)
-              }}
-              className="px-4 py-2 bg-muted text-muted-foreground rounded-md hover:bg-muted/80"
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 border border-input bg-background text-foreground rounded-md hover:bg-accent"
             >
-              Close
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+            >
+              {loading ? 'Saving...' : (project ? 'Update Project' : 'Create Project')}
             </button>
           </div>
-        </div>
-      )}
+        </form>
+      </div>
     </div>
   )
 } 
