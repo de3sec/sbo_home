@@ -7,6 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Image from "next/image"
 import { Layout } from "./shared/layout"
 import { blogApi } from "@/lib/api"
+import { getAbsoluteImageUrl } from "@/lib/utils"
 import { CalendarIcon, ClockIcon, UserIcon, TagIcon } from "@heroicons/react/24/outline"
 import { BlogSkeleton } from "./skeletons/blog-skeleton"
 
@@ -176,7 +177,7 @@ export function BlogsPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src={featuredPost.image}
+                  src={getAbsoluteImageUrl(featuredPost.image)}
                   alt={`${featuredPost.title} - Featured Shopify Development Article`}
                   fill
                   className="object-cover"
@@ -229,7 +230,7 @@ export function BlogsPage() {
               <Card key={post._id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
-                    src={post.image}
+                    src={getAbsoluteImageUrl(post.image)}
                     alt={`${post.title} - Shopify Development Article by SBO Tech`}
                     fill
                     className="object-cover"

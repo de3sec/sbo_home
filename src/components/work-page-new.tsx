@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card"
 import Image from "next/image"
 import { Layout } from "./shared/layout"
 import { projectApi } from "@/lib/api"
+import { getAbsoluteImageUrl } from "@/lib/utils"
 import { 
   ShoppingCartIcon, 
   TagIcon, 
@@ -170,7 +171,7 @@ export function WorkPage() {
               <Card key={project._id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
-                    src={project.image}
+                    src={getAbsoluteImageUrl(project.image)}
                     alt={`${project.title} - Shopify App Development Project by SBO Tech`}
                     fill
                     className="object-cover"

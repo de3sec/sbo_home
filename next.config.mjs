@@ -6,7 +6,13 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '3000',
-        pathname: '/uploads/**',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/uploads/**',
       },
       {
         protocol: 'https',
@@ -28,9 +34,9 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'sbotech.in',
-        pathname: '/uploads/**',
+        pathname: '/**',
       },
-      // Add API route pattern for EasyPanel
+      // Allow Next.js to optimize images served via API routes
       {
         protocol: 'https',
         hostname: 'sbotech.in',

@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Image from "next/image"
 import { Layout } from "./shared/layout"
+import { getAbsoluteImageUrl } from "@/lib/utils"
 import { 
   UsersIcon, 
   RocketLaunchIcon, 
@@ -110,7 +111,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src="/api/uploads/1753593229460-2emei4er2gb.png"
+                  src={getAbsoluteImageUrl("/api/uploads/1753593229460-2emei4er2gb.png")}
                   alt="SBO Tech Mission"
                   fill
                   className="object-cover"
@@ -242,7 +243,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src="/api/uploads/1753594036208-05dx30jvco4a.png"
+                  src={getAbsoluteImageUrl("/api/uploads/1753594036208-05dx30jvco4a.png")}
                   alt="Our Services"
                   fill
                   className="object-cover"
