@@ -326,7 +326,7 @@ export function ImageManagement() {
                   onError={() => {
                     // Fallback handled by Next.js Image component
                   }}
-                  unoptimized={image.url.startsWith('/uploads/')}
+                  unoptimized={image.url.startsWith('/uploads/') || image.url.startsWith('/api/uploads/')}
                 />
                 
                 {/* Overlay Actions */}

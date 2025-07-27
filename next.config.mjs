@@ -30,6 +30,12 @@ const nextConfig = {
         hostname: 'sbotech.in',
         pathname: '/uploads/**',
       },
+      // Add API route pattern for EasyPanel
+      {
+        protocol: 'https',
+        hostname: 'sbotech.in',
+        pathname: '/api/uploads/**',
+      },
     ],
   },
 };

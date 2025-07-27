@@ -110,7 +110,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src="/uploads/1753593229460-2emei4er2gb.png"
+                  src="/api/uploads/1753593229460-2emei4er2gb.png"
                   alt="SBO Tech Mission"
                   fill
                   className="object-cover"
@@ -242,7 +242,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src="/uploads/1753594036208-05dx30jvco4a.png"
+                  src="/api/uploads/1753594036208-05dx30jvco4a.png"
                   alt="Our Services"
                   fill
                   className="object-cover"

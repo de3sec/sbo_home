@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const filepath = join(uploadsDir, filename)
-    await writeFile(filepath, buffer)
+    await writeFile(filepath, Uint8Array.from(buffer))
 
     // Create image record in database
     const image = new Image({
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       originalName: file.name,
       mimeType: file.type,
       size: file.size,
-      url: `/uploads/${filename}`,
+      url: `/api/uploads/${filename}`,
       alt,
       description,
       tags: tags ? tags.split(',').map((tag: string) => tag.trim()) : [],
