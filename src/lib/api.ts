@@ -265,4 +265,57 @@ export const contactApi = {
       method: 'DELETE',
     })
   },
+}
+
+// Image API
+export const imageApi = {
+  // Upload image
+  upload: async (formData: FormData) => {
+    const API_BASE = getApiBase()
+    const url = `${API_BASE}/images`
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+      throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`)
+    }
+
+    return response.json()
+  },
+
+  // Get all images
+  getAll: async (params?: {
+    search?: string
+    tag?: string
+    limit?: number
+    page?: number
+  }) => {
+    const searchParams = new URLSearchParams()
+    if (params?.search) searchParams.append('search', params.search)
+    if (params?.tag) searchParams.append('tag', params.tag)
+    if (params?.limit) searchParams.append('limit', params.limit.toString())
+    if (params?.page) searchParams.append('page', params.page.toString())
+
+    const queryString = searchParams.toString()
+    return apiRequest(`/images${queryString ? `?${queryString}` : ''}`)
+  },
+
+  // Update image metadata
+  update: async (id: string, data: any) => {
+    return apiRequest(`/images/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    })
+  },
+
+  // Delete image
+  delete: async (id: string) => {
+    return apiRequest(`/images/${id}`, {
+      method: 'DELETE',
+    })
+  },
 } 

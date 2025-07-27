@@ -52,8 +52,6 @@ export function BlogsPage() {
     fetchBlogPosts()
   }, [])
 
-
-
   const fetchBlogPosts = async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -80,8 +78,6 @@ export function BlogsPage() {
   const featuredPost = blogPosts.find(post => post.featured) || blogPosts[0]
   // Show all filtered posts in the grid, including the featured one
   const gridPosts = filteredPosts
-
-
 
   if (loading) {
     return (
@@ -117,10 +113,12 @@ export function BlogsPage() {
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="text-center space-y-6">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl">
-              SBO Tech Blog
+              Shopify Development Insights & Expert Tutorials
             </h1>
             <p className="max-w-[700px] mx-auto text-muted-foreground text-lg md:text-xl leading-relaxed">
-              Insights, tutorials, and expert advice on Shopify development, e-commerce optimization, and digital business growth.
+              Stay ahead of the competition with expert insights on Shopify development, e-commerce optimization, 
+              and digital commerce strategies. Our comprehensive tutorials and industry analysis help businesses 
+              across the US, Europe, and Australia maximize their Shopify potential.
             </p>
           </div>
         </div>
@@ -133,7 +131,7 @@ export function BlogsPage() {
             <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
               <div className="space-y-6">
                 <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary font-medium">
-                  Featured Post
+                  Featured Article
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl lg:text-5xl leading-tight">
                   {featuredPost.title}
@@ -144,7 +142,7 @@ export function BlogsPage() {
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Avatar className="w-6 h-6">
-                      <AvatarImage src={featuredPost.author.avatar} />
+                      <AvatarImage src={featuredPost.author.avatar} alt={`${featuredPost.author.name} - ${featuredPost.author.role}`} />
                       <AvatarFallback className="text-xs">{featuredPost.author.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <span className="font-medium">{featuredPost.author.name}</span>
@@ -179,7 +177,7 @@ export function BlogsPage() {
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
                   src={featuredPost.image}
-                  alt={featuredPost.title}
+                  alt={`${featuredPost.title} - Featured Shopify Development Article`}
                   fill
                   className="object-cover"
                 />
@@ -232,7 +230,7 @@ export function BlogsPage() {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={post.image}
-                    alt={post.title}
+                    alt={`${post.title} - Shopify Development Article by SBO Tech`}
                     fill
                     className="object-cover"
                   />
@@ -252,7 +250,7 @@ export function BlogsPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Avatar className="w-6 h-6">
-                        <AvatarImage src={post.author.avatar} />
+                        <AvatarImage src={post.author.avatar} alt={`${post.author.name} - ${post.author.role}`} />
                         <AvatarFallback className="text-xs">{post.author.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <span className="text-sm font-medium">{post.author.name}</span>
@@ -267,7 +265,7 @@ export function BlogsPage() {
                     className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground w-full"
                     prefetch={false}
                   >
-                    Read More
+                    Read Article
                   </Link>
                 </div>
               </Card>

@@ -35,9 +35,9 @@ export function Header({ className = "" }: HeaderProps) {
   xmlns="http://www.w3.org/2000/svg"
   fill="none"
   stroke="currentColor"
-  stroke-width="2.5"
-  stroke-linecap="round"
-  stroke-linejoin="round"
+  strokeWidth="2.5"
+  strokeLinecap="round"
+  strokeLinejoin="round"
 >
 
   <polygon points="32,8 12,16 32,24 52,16" />
@@ -47,7 +47,7 @@ export function Header({ className = "" }: HeaderProps) {
   <polygon points="52,16 52,40 32,48 32,24" />
 
  
-  <g filter="url(#bagShadow)" stroke="currentColor" stroke-width="2">
+  <g filter="url(#bagShadow)" stroke="currentColor" strokeWidth="2">
 
     <path d="M27,28 L37,28 L39,38 L25,38 Z" fill="none"/>
     
@@ -57,7 +57,7 @@ export function Header({ className = "" }: HeaderProps) {
 
   <defs>
     <filter id="bagShadow" x="20" y="20" width="24" height="24" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.15"/>
+      <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000" floodOpacity="0.15"/>
     </filter>
   </defs>
 </svg>

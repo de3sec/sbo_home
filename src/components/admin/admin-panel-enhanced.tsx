@@ -6,6 +6,7 @@ import { BlogManagementEnhanced } from "./blog-management-enhanced"
 import { WorkManagementEnhanced } from "./work-management-enhanced"
 import { NewsletterManagement } from "./newsletter-management"
 import { ContactManagement } from "./contact-management"
+import { ImageManagement } from "./image-management"
 import { Layout } from "../shared/layout"
 import { analyticsApi } from "@/lib/api"
 import { useAuth } from "@/contexts/AuthContext"
@@ -82,7 +83,7 @@ interface AnalyticsData {
 }
 
 export function AdminPanelEnhanced() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'blogs' | 'projects' | 'newsletter' | 'contact'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'blogs' | 'projects' | 'newsletter' | 'contact' | 'images'>('dashboard')
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -215,6 +216,17 @@ export function AdminPanelEnhanced() {
           >
             <BriefcaseIcon className="w-4 h-4 inline mr-2" />
             Projects
+          </button>
+          <button
+            onClick={() => setActiveTab('images')}
+            className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
+              activeTab === 'images'
+                ? 'bg-background text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <EyeIcon className="w-4 h-4 inline mr-2" />
+            Images
           </button>
           <button
             onClick={() => setActiveTab('newsletter')}
@@ -352,10 +364,10 @@ export function AdminPanelEnhanced() {
                     <span className="font-medium">{analytics.blogPosts.archived}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                                         <div className="flex items-center gap-2">
-                       <ArrowTrendingUpIcon className="w-4 h-4 text-purple-500" />
-                       <span className="text-sm">Featured</span>
-                     </div>
+                    <div className="flex items-center gap-2">
+                      <ArrowTrendingUpIcon className="w-4 h-4 text-purple-500" />
+                      <span className="text-sm">Featured</span>
+                    </div>
                     <span className="font-medium">{analytics.blogPosts.featured}</span>
                   </div>
                 </div>
@@ -466,6 +478,11 @@ export function AdminPanelEnhanced() {
         {/* Projects Management */}
         {activeTab === 'projects' && (
           <WorkManagementEnhanced />
+        )}
+
+        {/* Images Management */}
+        {activeTab === 'images' && (
+          <ImageManagement />
         )}
 
         {/* Newsletter Management */}

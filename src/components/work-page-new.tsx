@@ -116,10 +116,12 @@ export function WorkPage() {
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="text-center space-y-6">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl">
-              Our Work
+              Our Shopify Development Portfolio
             </h1>
             <p className="max-w-[700px] mx-auto text-muted-foreground text-lg md:text-xl leading-relaxed">
-              Explore our portfolio of innovative Shopify apps and solutions that have transformed businesses and driven measurable results.
+              Discover our comprehensive collection of innovative Shopify apps and e-commerce solutions that have 
+              transformed businesses across the US, Europe, and Australia. From custom app development to performance 
+              optimization, each project demonstrates our expertise in driving measurable results.
             </p>
           </div>
         </div>
@@ -164,14 +166,17 @@ export function WorkPage() {
       <section className="w-full py-12 md:py-16">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => (
               <Card key={project._id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={`${project.title} - Shopify App Development Project by SBO Tech`}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    // Next.js will automatically generate srcSet for optimized images
+                    priority={index < 3} // Optionally prioritize first few images
                   />
                   <div className="absolute top-4 right-4">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -229,7 +234,7 @@ export function WorkPage() {
                     className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground w-full"
                     prefetch={false}
                   >
-                    View Project
+                    View Project Details
                   </Link>
                 </div>
               </Card>
@@ -249,17 +254,18 @@ export function WorkPage() {
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="text-center space-y-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl lg:text-5xl">
-              Ready to Start Your Project?
+              Ready to Start Your Shopify Development Project?
             </h2>
             <p className="max-w-[600px] mx-auto text-muted-foreground text-lg">
-              Let&apos;s discuss how we can help you build the perfect Shopify solution for your business.
+              Whether you&apos;re in the US, Europe, or Australia, our Shopify development experts are ready to 
+              help you build the perfect e-commerce solution for your business. Let&apos;s discuss your project requirements.
             </p>
             <Link
-              href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
+              href="/contact"
               className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
               prefetch={false}
             >
-              Get Started
+              Start Your Project
             </Link>
           </div>
         </div>

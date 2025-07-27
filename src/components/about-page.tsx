@@ -110,7 +110,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src="/hero-image.jpg"
+                  src="/uploads/1753593229460-2emei4er2gb.png"
                   alt="SBO Tech Mission"
                   fill
                   className="object-cover"
@@ -233,7 +233,7 @@ export function AboutPage() {
                   </div>
                 </div>
                 <Link
-                  href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
+                  href="/contact"
                   className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
                   prefetch={false}
                 >
@@ -242,7 +242,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src="/services-image.jpg"
+                  src="/uploads/1753594036208-05dx30jvco4a.png"
                   alt="Our Services"
                   fill
                   className="object-cover"

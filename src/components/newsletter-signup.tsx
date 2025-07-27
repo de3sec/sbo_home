@@ -56,7 +56,7 @@ export function NewsletterSignup() {
   return (
     <div className="max-w-2xl mx-auto">
       <form onSubmit={handleSubmit} className="space-y-4 flex flex-col items-center">
-        <div className="flex gap-3">
+        <div className="flex flex-col md:flex-row gap-3">
           <input
             type="text"
             placeholder="First name (optional)"
@@ -78,7 +78,7 @@ export function NewsletterSignup() {
           <p className="text-red-600 text-sm text-center">{error}</p>
         )}
         
-        <div className="flex items-start gap-3">
+        <div className="flex items-center md:items-start gap-1 md:gap-3">
           <input
             type="checkbox"
             id="newsletter-consent"
