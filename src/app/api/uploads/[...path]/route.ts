@@ -8,10 +8,42 @@ export async function GET(
   { params }: { params: { path: string[] } }
 ) {
   try {
-    const filePath = join(process.cwd(), 'public', 'uploads', ...params.path)
+    // Try multiple possible paths for different deployment environments
+    const possiblePaths = [
+      join(process.cwd(), 'public', 'uploads', ...params.path),
+      join(process.cwd(), 'uploads', ...params.path),
+      join(process.cwd(), '..', 'public', 'uploads', ...params.path),
+      join(process.cwd(), '..', 'uploads', ...params.path),
+    ]
     
-    if (!existsSync(filePath)) {
-      return NextResponse.json({ error: 'File not found' }, { status: 404 })
+    let filePath = possiblePaths[0]
+    let fileExists = false
+    
+    for (const path of possiblePaths) {
+      if (existsSync(path)) {
+        filePath = path
+        fileExists = true
+        break
+      }
+    }
+    
+    console.log('API Route Debug:', {
+      requestedPath: params.path,
+      possiblePaths,
+      foundPath: fileExists ? filePath : 'none',
+      cwd: process.cwd()
+    })
+    
+    if (!fileExists) {
+      console.log('File not found in any of the possible paths:', possiblePaths)
+      return NextResponse.json({ 
+        error: 'File not found',
+        debug: {
+          requestedPath: params.path,
+          possiblePaths,
+          cwd: process.cwd()
+        }
+      }, { status: 404 })
     }
 
     const fileBuffer = await readFile(filePath)
@@ -43,6 +75,9 @@ export async function GET(
       headers: {
         'Content-Type': contentType,
         'Cache-Control': 'public, max-age=31536000, immutable',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type',
       },
     })
   } catch (error) {
