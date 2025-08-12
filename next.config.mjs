@@ -3,25 +3,6 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3000',
-        pathname: '/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3000',
-        pathname: '/api/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'localhost',
-        port: '3000',
-        pathname: '/uploads/**',
-      },
-      // For deployed environments - add your domain here
-      {
         protocol: 'https',
         hostname: '*.vercel.app',
         pathname: '/uploads/**',
@@ -34,13 +15,18 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'sbotech.in',
-        pathname: '/**',
+        pathname: '/uploads/**',
       },
-      // Allow Next.js to optimize images served via API routes
       {
         protocol: 'https',
         hostname: 'sbotech.in',
         pathname: '/api/uploads/**',
+      },
+      // Supabase storage patterns
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/public/**',
       },
     ],
   },

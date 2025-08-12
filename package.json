@@ -8,12 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx src/scripts/seed.ts",
-    "migrate-images": "tsx src/scripts/migrate-image-urls.ts"
+    "migrate-images": "tsx src/scripts/migrate-image-urls.ts",
+    "migrate-to-supabase": "tsx src/scripts/migrate-to-supabase.ts"
   },
   "dependencies": {
     "@formbricks/js": "^2.1.1",
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-avatar": "^1.1.0",
+    "@supabase/supabase-js": "^2.53.0",
     "@tailwindcss/typography": "^0.5.16",
     "@tsparticles/engine": "^3.3.0",
     "@tsparticles/react": "^3.0.0",

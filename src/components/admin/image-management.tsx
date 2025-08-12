@@ -19,14 +19,17 @@ interface Image {
   _id: string
   filename: string
   originalName: string
-  mimeType: string
+  mimetype: string
   size: number
   url: string
+  path: string
+  tags: string[]
+  category: string
   alt: string
   description: string
-  tags: string[]
   uploadedBy: string
   isPublic: boolean
+  uploadedAt: string
   createdAt: string
   updatedAt: string
 }
@@ -71,12 +74,11 @@ export function ImageManagement() {
     try {
       setLoading(true)
       const response = await imageApi.getAll({
-        search: searchTerm,
         tag: selectedTag,
         page: currentPage,
         limit: 20
       })
-      setImages(response.data)
+      setImages(response.images)
       setTotalPages(response.pagination.pages)
       setTotalImages(response.pagination.total)
       setError(null)
@@ -149,9 +151,8 @@ export function ImageManagement() {
 
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('alt', '')
-      formData.append('description', '')
       formData.append('tags', '')
+      formData.append('category', 'general')
 
       // Simulate progress
       const progressInterval = setInterval(() => {
@@ -164,13 +165,21 @@ export function ImageManagement() {
         })
       }, 100)
 
+      console.log('Uploading file:', file.name, file.type, file.size)
+      console.log('FormData contents:', {
+        file: file.name,
+        tags: '',
+        category: 'general'
+      })
+      
       const response = await imageApi.upload(formData)
+      console.log('Upload response:', response)
       
       clearInterval(progressInterval)
       setUploadProgress(100)
 
       // Add new image to the list
-      setImages(prev => [response.data, ...prev])
+      setImages(prev => [response.image, ...prev])
       setShowUploadModal(false)
       
       // Reset file input
@@ -342,7 +351,7 @@ export function ImageManagement() {
                     <EyeIcon className="w-4 h-4 text-white" />
                   </button>
                   <button
-                    onClick={() => copyToClipboard(`${window.location.origin}${image.url}`)}
+                    onClick={() => copyToClipboard(`${image.url}`)}
                     className="p-2 bg-white/20 hover:bg-white/30 rounded-md transition-colors"
                     title="Copy URL"
                   >
@@ -518,7 +527,7 @@ export function ImageManagement() {
                   </div>
                   <div>
                     <p className="text-muted-foreground">Type</p>
-                    <p>{selectedImage.mimeType}</p>
+                    <p>{selectedImage.mimetype}</p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Uploaded</p>

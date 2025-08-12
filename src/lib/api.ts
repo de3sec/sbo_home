@@ -289,13 +289,13 @@ export const imageApi = {
 
   // Get all images
   getAll: async (params?: {
-    search?: string
+    category?: string
     tag?: string
     limit?: number
     page?: number
   }) => {
     const searchParams = new URLSearchParams()
-    if (params?.search) searchParams.append('search', params.search)
+    if (params?.category) searchParams.append('category', params.category)
     if (params?.tag) searchParams.append('tag', params.tag)
     if (params?.limit) searchParams.append('limit', params.limit.toString())
     if (params?.page) searchParams.append('page', params.page.toString())

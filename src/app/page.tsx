@@ -145,9 +145,9 @@ export default function Home() {
         }}
       />
       
-      <div className="w-full h-full">
-        <HomePage></HomePage>
-      </div>
+    <div className="w-full h-full">
+      <HomePage></HomePage>
+    </div>
     </>
   );
 }

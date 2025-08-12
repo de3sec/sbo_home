@@ -3,14 +3,17 @@ import mongoose from 'mongoose'
 const imageSchema = new mongoose.Schema({
   filename: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   originalName: {
     type: String,
     required: true
   },
-  mimeType: {
+  url: {
+    type: String,
+    required: true
+  },
+  path: {
     type: String,
     required: true
   },
@@ -18,9 +21,17 @@ const imageSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  url: {
+  mimetype: {
     type: String,
     required: true
+  },
+  tags: [{
+    type: String,
+    trim: true
+  }],
+  category: {
+    type: String,
+    default: 'general'
   },
   alt: {
     type: String,
@@ -30,10 +41,6 @@ const imageSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  tags: [{
-    type: String,
-    trim: true
-  }],
   uploadedBy: {
     type: String,
     default: 'Admin'
@@ -41,12 +48,18 @@ const imageSchema = new mongoose.Schema({
   isPublic: {
     type: Boolean,
     default: true
+  },
+  uploadedAt: {
+    type: Date,
+    default: Date.now
   }
 }, {
   timestamps: true
 })
 
-// Add index for better query performance
+// Add indexes for better query performance
 imageSchema.index({ filename: 1, uploadedAt: -1 })
+imageSchema.index({ category: 1 })
+imageSchema.index({ tags: 1 })
 
 export default mongoose.models.Image || mongoose.model('Image', imageSchema) 

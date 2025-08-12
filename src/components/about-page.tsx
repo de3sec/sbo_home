@@ -111,7 +111,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src={getAbsoluteImageUrl("/api/uploads/1753593229460-2emei4er2gb.png")}
+                  src="https://flljvvebbyggdnhiickk.storage.supabase.co/storage/v1/object/public/sbo-images/1754927709046-l3u2551idd.png"
                   alt="SBO Tech Mission"
                   fill
                   className="object-cover"
@@ -243,7 +243,7 @@ export function AboutPage() {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/20">
                 <Image
-                  src={getAbsoluteImageUrl("/api/uploads/1753594036208-05dx30jvco4a.png")}
+                  src="https://flljvvebbyggdnhiickk.storage.supabase.co/storage/v1/object/public/sbo-images/1754969498130-7qqvqausn3t.png"
                   alt="Our Services"
                   fill
                   className="object-cover"
