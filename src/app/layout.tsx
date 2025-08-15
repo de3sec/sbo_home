@@ -1,5 +1,5 @@
 import { Bricolage_Grotesque } from 'next/font/google'
-import { Space_Mono } from 'next/font/google'
+import { Space_Mono, Press_Start_2P } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import './globals.css'
 import { Metadata } from 'next'
@@ -7,17 +7,26 @@ import FormbricksProvider from "./formbricks";
 import { Suspense } from 'react'
 import { Providers } from '@/components/providers/Providers'
 import { CookieConsent } from '@/components/cookie-consent'
+import { SvgColorEnforcer } from '@/components/SvgColorEnforcer'
 
 const fontHeading = Bricolage_Grotesque({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-heading',
+  adjustFontFallback: false,
 })
 
 const fontBody = Space_Mono({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-body',
+  weight: '400'
+})
+
+const fontLogo = Press_Start_2P({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-logo',
   weight: '400'
 })
 
@@ -244,13 +253,16 @@ export default function RootLayout({
         className={cn(
           'antialiased',
           fontHeading.variable,
-          fontBody.variable
+          fontBody.variable,
+          fontLogo.variable
         )}
       >
         <Providers>
           {children}
           <CookieConsent />
         </Providers>
+        {/* Enforce color on data-URI svg icons */}
+        <SvgColorEnforcer />
       </body>
     </html>
   );

@@ -27,49 +27,17 @@ export function Header({ className = "" }: HeaderProps) {
   return (
     <header className={`px-4 lg:px-6 h-14 flex items-center border-b border-border ${className}`}>
       <div className="container mx-auto max-w-7xl flex items-center justify-between">
-        <Link href="/" className="flex items-center justify-center p-4" prefetch={false}>
-        <svg
-  width="50"
-  height="50"
-  viewBox="0 0 60 60"
-  xmlns="http://www.w3.org/2000/svg"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2.5"
-  strokeLinecap="round"
-  strokeLinejoin="round"
->
-
-  <polygon points="32,8 12,16 32,24 52,16" />
-  
-  <polygon points="12,16 12,40 32,48 32,24" />
-
-  <polygon points="52,16 52,40 32,48 32,24" />
-
- 
-  <g filter="url(#bagShadow)" stroke="currentColor" strokeWidth="2">
-
-    <path d="M27,28 L37,28 L39,38 L25,38 Z" fill="none"/>
-    
-    <path d="M29,28 C29,24 31,24 31,28" fill="none"/>
-    <path d="M33,28 C33,24 35,24 35,28" fill="none"/>
-  </g>
-
-  <defs>
-    <filter id="bagShadow" x="20" y="20" width="24" height="24" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000" floodOpacity="0.15"/>
-    </filter>
-  </defs>
-</svg>
-          <span className="text-xl font-bold">SBOᵗᵉᶜʰ</span>
+        <Link href="/" className="flex flex-col justify-center align-middle items-center p-2 font-logo my-1" prefetch={false}>
+          <p className="text-xl font-bold leading-none">SBO</p>
+          <p className="text-xs font-bold">tech</p>
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-4 sm:gap-6">
+        <nav className="hidden md:flex gap-4 sm:gap-6 font-logo">
           <Link 
             href="/" 
-            className={`text-sm font-medium hover:underline underline-offset-4 ${
-              isActive("/") ? "underline" : ""
+            className={`text-xs font-medium hover:underline underline-offset-4 ${
+              isActive("/") ? "bg-primary text-primary-foreground p-2" : "bg-transparent p-2"
             }`} 
             prefetch={false}
           >
@@ -77,8 +45,8 @@ export function Header({ className = "" }: HeaderProps) {
           </Link>
           <Link 
             href="/blogs" 
-            className={`text-sm font-medium hover:underline underline-offset-4 ${
-              isActive("/blogs") ? "underline" : ""
+            className={`text-xs font-medium hover:underline underline-offset-4 ${
+              isActive("/blogs") ? "bg-primary text-primary-foreground p-2" : "bg-transparent p-2"
             }`} 
             prefetch={false}
           >
@@ -86,8 +54,8 @@ export function Header({ className = "" }: HeaderProps) {
           </Link>
           <Link 
             href="/about" 
-            className={`text-sm font-medium hover:underline underline-offset-4 ${
-              isActive("/about") ? "underline" : ""
+            className={`text-xs font-medium hover:underline underline-offset-4 ${
+              isActive("/about") ? "bg-primary text-primary-foreground p-2" : "bg-transparent p-2"
             }`} 
             prefetch={false}
           >
@@ -95,8 +63,8 @@ export function Header({ className = "" }: HeaderProps) {
           </Link>
           <Link 
             href="/work" 
-            className={`text-sm font-medium hover:underline underline-offset-4 ${
-              isActive("/work") ? "underline" : ""
+            className={`text-xs font-medium hover:underline underline-offset-4 ${
+              isActive("/work") ? "bg-primary text-primary-foreground p-2" : "bg-transparent p-2"
             }`} 
             prefetch={false}
           >
@@ -104,7 +72,9 @@ export function Header({ className = "" }: HeaderProps) {
           </Link>
           <Link 
             href="/contact" 
-            className="text-sm font-medium hover:underline underline-offset-4" 
+            className={`text-xs font-medium hover:underline underline-offset-4 ${
+              isActive("/contact") ? "bg-primary text-primary-foreground p-2" : "bg-transparent p-2"
+            }`} 
             prefetch={false}
           >
             Contact

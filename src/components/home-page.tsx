@@ -2,13 +2,12 @@
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import Image from "next/image"
-import PartnerLogo from "../assets/partnerslogo.svg"
 import { Layout } from "./shared/layout"
 import IconCloud from "./magicui/icon-cloud"
 import { IconCloudHome } from "./magicui/icon-cloud-home"
-import { SVGProps } from "react"
+import { Suspense, SVGProps } from "react"
 import { NewsletterSignup } from "./newsletter-signup"
+import { PartnerLogoLoader } from "./partner-logo-loader"
 
 export function HomePage() {
   return (
@@ -28,17 +27,17 @@ export function HomePage() {
                   </p>
 
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="flex flex-col gap-3 md:flex-row">
                   <Link
-                    href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
-                    className="cta inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    href="/contact"
+                    className="cta inline-flex h-10 items-center justify-center btn-8bit bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
                     Get Your Free Quote
                   </Link>
                   <Link
                     href="/work"
-                  className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center btn-8bit border border-input bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                   prefetch={false}
                 >
                     View Our Work
@@ -65,13 +64,9 @@ export function HomePage() {
                   </div>
                 </div>
               </div>
-              <Image
-                src={PartnerLogo}
-                width="650"
-                height="650"
-                alt="SBO Tech Shopify App Development Services - Custom E-commerce Solutions"
-                className="mx-auto aspect-video fill-foreground overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
-              />
+              <Suspense fallback={<div className="relative mx-auto w-full max-w-[650px] aspect-video lg:order-last rounded-xl overflow-hidden bg-background"></div>}>
+                <PartnerLogoLoader />
+              </Suspense>
             </div>
           </div>
         </section>
@@ -189,17 +184,17 @@ export function HomePage() {
                 custom app development services and how we can drive your success.
               </p>
             </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end">
+            <div className="flex flex-col gap-3 md:flex-row lg:justify-end">
               <Link
                 href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
-                className="cta inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="cta inline-flex h-10 items-center justify-center btn-8bit bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >
                 Get Your Free Quote
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center btn-8bit border border-input bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >
                 Contact Our Team
