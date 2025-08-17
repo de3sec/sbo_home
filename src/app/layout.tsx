@@ -8,6 +8,7 @@ import { Suspense } from 'react'
 import { Providers } from '@/components/providers/Providers'
 import { CookieConsent } from '@/components/cookie-consent'
 import { SvgColorEnforcer } from '@/components/SvgColorEnforcer'
+import Script from 'next/script'
 
 const fontHeading = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -257,6 +258,24 @@ export default function RootLayout({
           fontLogo.variable
         )}
       >
+        {/* Analytics Scripts */}
+        <Script
+          id="analytics-config"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.ANALYTICS_CONFIG = {
+                trackingId: 'track_vxr5x8pnot',
+                endpoint: 'https://tum.sbotech.in/api/tracking/collect'
+              };
+            `
+          }}
+        />
+        <Script
+          src="https://tum.sbotech.in/api/tracking/script?id=track_vxr5x8pnot"
+          strategy="afterInteractive"
+        />
+
         <Providers>
           {children}
           <CookieConsent />
