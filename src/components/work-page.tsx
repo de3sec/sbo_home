@@ -31,7 +31,7 @@ const projects = [
       "Performance analytics"
     ],
     technologies: ["Shopify API", "Node.js", "React", "PostgreSQL", "Redis"],
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     status: "Live",
     client: "E-commerce Retailer",
     impact: "40% increase in ad conversion rates"
@@ -69,7 +69,7 @@ const projects = [
       "Performance monitoring"
     ],
     technologies: ["Shopify Liquid", "JavaScript", "GraphQL", "MongoDB", "AWS Lambda"],
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     status: "Live",
     client: "Fashion Retailer",
     impact: "60% reduction in manual catalog work"
@@ -107,7 +107,7 @@ const projects = [
       "Advanced caching"
     ],
     technologies: ["Next.js", "Shopify Storefront API", "TypeScript", "Vercel", "Stripe", "Contentful"],
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     status: "Live",
     client: "Tech Startup",
     impact: "80% improvement in page load speed"

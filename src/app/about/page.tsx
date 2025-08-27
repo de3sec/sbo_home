@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: "SBO Tech",
     images: [
       {
-        url: "/hero-image.jpg",
+        url: "/hero-image.png",
         width: 1200,
         height: 630,
         alt: "About SBO Tech - Shopify App Development Agency",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "About SBO Tech - Leading Shopify App Development Agency",
     description: "Discover SBO Tech, a premier Shopify app development agency serving US, Europe, and Australia with custom e-commerce solutions.",
-    images: ["/hero-image.jpg"],
+    images: ["/hero-image.png"],
   },
   alternates: {
     canonical: "https://sbotech.in/about",

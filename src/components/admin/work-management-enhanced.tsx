@@ -522,7 +522,7 @@ function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
     longDescription: project?.longDescription || '',
     features: project?.features || [],
     technologies: project?.technologies || [],
-    image: project?.image || '/hero-image.jpg',
+    image: project?.image || '/hero-image.png',
     status: project?.status || 'in-development',
     client: project?.client || '',
     impact: project?.impact || '',

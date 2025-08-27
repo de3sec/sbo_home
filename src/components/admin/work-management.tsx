@@ -63,7 +63,7 @@
 //       "Performance analytics"
 //     ],
 //     technologies: ["Shopify API", "Node.js", "React", "PostgreSQL", "Redis"],
-//     image: "/hero-image.jpg",
+//     image: "/hero-image.png",
 //     status: "live",
 //     client: "E-commerce Retailer",
 //     impact: "40% increase in ad conversion rates",
@@ -131,7 +131,7 @@
 //       "Performance monitoring"
 //     ],
 //     technologies: ["Shopify Liquid", "JavaScript", "GraphQL", "MongoDB", "AWS Lambda"],
-//     image: "/hero-image.jpg",
+//     image: "/hero-image.png",
 //     status: "in-development",
 //     client: "Fashion Retailer",
 //     impact: "60% reduction in manual catalog work",
@@ -462,7 +462,7 @@
 //       impact: "",
 //       timeline: "",
 //       team: "",
-//       image: "/hero-image.jpg"
+//       image: "/hero-image.png"
 //     }
 //   )
 

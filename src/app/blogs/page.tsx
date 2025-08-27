@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: 'SBO Tech',
     images: [
       {
-        url: '/hero-image.jpg',
+        url: '/hero-image.png',
         width: 1200,
         height: 630,
         alt: 'SBO Tech Shopify Development Blog',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Shopify Development Blog - Expert Insights & E-commerce Tutorials',
     description: 'Get the latest insights on Shopify development and e-commerce optimization.',
-    images: ['/hero-image.jpg'],
+    images: ['/hero-image.png'],
   },
   robots: {
     index: true,

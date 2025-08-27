@@ -50,7 +50,7 @@ const blogPosts = [
     readTime: "8 min read",
     category: "Development",
     featured: true,
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     tags: ["Shopify", "App Development", "Best Practices"],
     status: "published",
     slug: "10-essential-shopify-app-development-best-practices-for-2025"
@@ -141,7 +141,7 @@ const blogPosts = [
     readTime: "15 min read",
     category: "AI & Innovation",
     featured: false,
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     tags: ["AI", "E-commerce", "Innovation"],
     status: "published",
     slug: "the-future-of-e-commerce-ai-powered-shopify-solutions"
@@ -175,7 +175,7 @@ const projects = [
       "Performance analytics"
     ],
     technologies: ["Shopify API", "Node.js", "React", "PostgreSQL", "Redis"],
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     status: "live",
     client: "E-commerce Retailer",
     impact: "40% increase in ad conversion rates",
@@ -243,7 +243,7 @@ const projects = [
       "Performance monitoring"
     ],
     technologies: ["Shopify Liquid", "JavaScript", "GraphQL", "MongoDB", "AWS Lambda"],
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     status: "in-development",
     client: "Fashion Retailer",
     impact: "60% reduction in manual catalog work",

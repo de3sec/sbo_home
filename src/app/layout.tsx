@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     description: 'Premier Shopify app development agency specializing in custom e-commerce solutions, performance optimization, and seamless integrations.',
     images: [
       {
-        url: '/hero-image.jpg',
+        url: '/hero-image.png',
         width: 1200,
         height: 630,
         alt: 'SBO Tech - Shopify App Development Agency',
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'SBO Tech - Leading Shopify App Development Agency',
     description: 'Premier Shopify app development agency specializing in custom e-commerce solutions and performance optimization.',
-    images: ['/hero-image.jpg'],
+    images: ['/hero-image.png'],
   },
   robots: {
     index: true,

@@ -558,7 +558,7 @@ function BlogPostModal({ post, onClose, onSave }: BlogPostModalProps) {
     readTime: post?.readTime || '5 min read',
     category: post?.category || 'Development',
     featured: post?.featured || false,
-    image: post?.image || '/hero-image.jpg',
+    image: post?.image || '/hero-image.png',
     tags: post?.tags || [],
     status: post?.status || 'draft'
   })

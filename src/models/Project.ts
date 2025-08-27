@@ -30,7 +30,7 @@ const projectSchema = new mongoose.Schema({
   }],
   image: {
     type: String,
-    default: '/hero-image.jpg'
+    default: '/hero-image.png'
   },
   status: {
     type: String,

@@ -54,7 +54,7 @@ const sampleBlogPosts: BlogPost[] = [
     readTime: "8 min read",
     category: "Development",
     featured: true,
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     tags: ["Shopify", "App Development", "Best Practices"],
     status: "published"
   },
@@ -92,7 +92,7 @@ const sampleBlogPosts: BlogPost[] = [
     readTime: "15 min read",
     category: "AI & Innovation",
     featured: false,
-    image: "/hero-image.jpg",
+    image: "/hero-image.png",
     tags: ["AI", "E-commerce", "Innovation"],
     status: "draft"
   }
@@ -413,7 +413,7 @@ function BlogPostModal({ post, onClose, onSave }: BlogPostModalProps) {
       tags: [],
       status: "draft",
       featured: false,
-      image: "/hero-image.jpg",
+      image: "/hero-image.png",
       author: {
         name: "SBO Tech Team",
         avatar: "/placeholder-avatar.svg",
