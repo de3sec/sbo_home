@@ -1,4 +1,45 @@
+import { Metadata } from 'next'
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Terms of Service - SBO Tech | Service Agreement & Legal Terms",
+  description: "Read SBO Tech's terms of service for our Shopify app development services. Understand our service agreement, intellectual property rights, and legal terms.",
+  keywords: [
+    "SBO Tech terms of service",
+    "service agreement",
+    "legal terms",
+    "Shopify development terms",
+    "intellectual property",
+    "service conditions"
+  ],
+  openGraph: {
+    title: "Terms of Service - SBO Tech",
+    description: "Read SBO Tech's terms of service for our Shopify app development services.",
+    url: "https://sbotech.in/terms-of-service",
+    siteName: "SBO Tech",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary",
+    title: "Terms of Service - SBO Tech",
+    description: "Read SBO Tech's terms of service for our Shopify app development services.",
+  },
+  alternates: {
+    canonical: "https://sbotech.in/terms-of-service",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+}
 
 export default function TermsOfService() {
   return (

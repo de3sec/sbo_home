@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://sbotech.in'),
   alternates: {
-    canonical: '/blogs',
+    canonical: 'https://sbotech.in/blogs',
   },
   openGraph: {
     title: "Shopify Development Blog - Expert Insights & E-commerce Tutorials",

@@ -2,8 +2,43 @@ import { Metadata } from 'next'
 import { Layout } from '@/components/shared/layout'
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - SBO Tech",
-  description: "Privacy policy and data protection information for SBO Tech.",
+  title: "Privacy Policy - SBO Tech | Data Protection & Privacy Information",
+  description: "SBO Tech's privacy policy outlining how we collect, use, and protect your personal data. Learn about your GDPR rights and our data protection practices.",
+  keywords: [
+    "SBO Tech privacy policy",
+    "data protection",
+    "GDPR compliance",
+    "privacy rights",
+    "data security",
+    "personal information protection"
+  ],
+  openGraph: {
+    title: "Privacy Policy - SBO Tech",
+    description: "SBO Tech's privacy policy outlining how we collect, use, and protect your personal data.",
+    url: "https://sbotech.in/privacy",
+    siteName: "SBO Tech",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary",
+    title: "Privacy Policy - SBO Tech",
+    description: "SBO Tech's privacy policy outlining how we collect, use, and protect your personal data.",
+  },
+  alternates: {
+    canonical: "https://sbotech.in/privacy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 }
 
 export default function PrivacyPage() {
