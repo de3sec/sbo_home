@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Image from "next/image"
@@ -10,6 +11,15 @@ import { blogApi } from "@/lib/api"
 import { getAbsoluteImageUrl } from "@/lib/utils"
 import { CalendarIcon, ClockIcon, UserIcon, TagIcon } from "@heroicons/react/24/outline"
 import { BlogSkeleton } from "./skeletons/blog-skeleton"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 interface BlogPost {
   _id: string
@@ -43,25 +53,43 @@ const categories = [
 ]
 
 export function BlogsPage() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [pageChanging, setPageChanging] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState("All")
+  
+  // Get initial values from URL params
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || "All")
+  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') || '1'))
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalPosts, setTotalPosts] = useState(0)
+  const postsPerPage = 9 // 3x3 grid
 
-  useEffect(() => {
-    fetchBlogPosts()
-  }, [])
-
-  const fetchBlogPosts = async (isRefresh = false) => {
+  const fetchBlogPosts = useCallback(async (isRefresh = false, isPageChange = false) => {
     try {
       if (isRefresh) {
         setRefreshing(true)
+      } else if (isPageChange) {
+        setPageChanging(true)
       } else {
         setLoading(true)
       }
-      const response = await blogApi.getAll({ status: 'published', limit: 100 })
+      
+      const params = {
+        status: 'published',
+        limit: postsPerPage,
+        page: currentPage,
+        ...(selectedCategory !== 'All' && { category: selectedCategory })
+      }
+      
+      const response = await blogApi.getAll(params)
       setBlogPosts(response.data || [])
+      setTotalPages(response.pagination?.pages || 1)
+      setTotalPosts(response.pagination?.total || 0)
       setError(null)
     } catch (err) {
       setError('Failed to fetch blog posts')
@@ -69,16 +97,82 @@ export function BlogsPage() {
     } finally {
       setLoading(false)
       setRefreshing(false)
+      setPageChanging(false)
     }
-  }
+  }, [currentPage, selectedCategory, postsPerPage])
 
-  const filteredPosts = selectedCategory === "All" 
-    ? blogPosts 
-    : blogPosts.filter(post => post.category === selectedCategory)
+  useEffect(() => {
+    fetchBlogPosts()
+  }, [fetchBlogPosts])
 
   const featuredPost = blogPosts.find(post => post.featured) || blogPosts[0]
-  // Show all filtered posts in the grid, including the featured one
-  const gridPosts = filteredPosts
+  // Show all blog posts in the grid, including the featured one
+  const gridPosts = blogPosts
+
+  const updateURL = useCallback((newCategory: string, newPage: number) => {
+    const params = new URLSearchParams()
+    if (newCategory !== "All") {
+      params.set('category', newCategory)
+    }
+    if (newPage > 1) {
+      params.set('page', newPage.toString())
+    }
+    
+    const queryString = params.toString()
+    const newUrl = queryString ? `/blogs?${queryString}` : '/blogs'
+    router.push(newUrl, { scroll: false })
+  }, [router])
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    setCurrentPage(1) // Reset to first page when changing category
+    updateURL(category, 1)
+    fetchBlogPosts(false, true) // Indicate this is a category change
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    updateURL(selectedCategory, page)
+    fetchBlogPosts(false, true) // Indicate this is a page change
+    // Smooth scroll to top when changing page
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = []
+    const maxVisiblePages = 5
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i)
+        }
+        pages.push('ellipsis')
+        pages.push(totalPages)
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1)
+        pages.push('ellipsis')
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i)
+        }
+      } else {
+        pages.push(1)
+        pages.push('ellipsis')
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i)
+        }
+        pages.push('ellipsis')
+        pages.push(totalPages)
+      }
+    }
+
+    return pages
+  }
 
   if (loading) {
     return (
@@ -88,7 +182,7 @@ export function BlogsPage() {
     )
   }
 
-  if (error && blogPosts.length === 0) {
+  if (error && blogPosts.length === 0 && !loading) {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-[50vh]">
@@ -181,6 +275,8 @@ export function BlogsPage() {
                   alt={`${featuredPost.title} - Featured Shopify Development Article`}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
                 />
               </div>
             </div>
@@ -196,7 +292,7 @@ export function BlogsPage() {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => handleCategoryChange(category)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                     selectedCategory === category 
                       ? 'bg-primary text-primary-foreground' 
@@ -225,7 +321,7 @@ export function BlogsPage() {
       {/* Blog Posts Grid */}
       <section className="w-full py-12 md:py-16">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className={`grid gap-8 md:grid-cols-2 lg:grid-cols-3 ${pageChanging ? 'opacity-60 pointer-events-none' : ''} transition-opacity duration-200`}>
             {gridPosts.map((post) => (
               <Card key={post._id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -234,6 +330,8 @@ export function BlogsPage() {
                     alt={`${post.title} - Shopify Development Article by SBO Tech`}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-6 space-y-4">
@@ -276,6 +374,47 @@ export function BlogsPage() {
           {gridPosts.length === 0 && (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No blog posts found in this category.</p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex flex-col items-center space-y-4 mt-12">
+              <div className="text-sm text-muted-foreground">
+                Showing page {currentPage} of {totalPages} ({totalPosts} total posts)
+              </div>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    />
+                  </PaginationItem>
+                  
+                  {getPageNumbers().map((page, index) => (
+                    <PaginationItem key={index}>
+                      {page === 'ellipsis' ? (
+                        <PaginationEllipsis />
+                      ) : (
+                        <PaginationLink
+                          onClick={() => handlePageChange(page as number)}
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      )}
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           )}
         </div>

@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import { BlogsPage } from '@/components/blogs-page-new'
+import { Suspense } from 'react';
+import { BlogSkeleton } from '@/components/skeletons/blog-skeleton';
 
 export const metadata: Metadata = {
   title: "Shopify Development Blog - Expert Insights & E-commerce Tutorials | SBO Tech",
@@ -130,7 +132,9 @@ export default function Blogs() {
           })
         }}
       />
-      <BlogsPage />
+      <Suspense fallback={<BlogSkeleton />}>
+        <BlogsPage />
+      </Suspense>
     </>
   )
 } 

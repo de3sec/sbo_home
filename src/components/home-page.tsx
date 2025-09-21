@@ -186,7 +186,7 @@ export function HomePage() {
             </div>
             <div className="flex flex-col gap-3 md:flex-row lg:justify-end">
               <Link
-                href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
+                href="/contact"
                 className="cta inline-flex h-10 items-center justify-center btn-8bit bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >

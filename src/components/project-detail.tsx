@@ -186,7 +186,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
                       Let&apos;s discuss how we can help you achieve similar results.
                     </p>
                     <Link
-                      href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
+                      href="/contact"
                       className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 w-full"
                       prefetch={false}
                     >

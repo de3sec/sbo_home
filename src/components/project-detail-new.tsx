@@ -188,7 +188,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             Let&apos;s discuss how we can help you build the perfect Shopify solution for your business.
           </p>
           <Link
-            href="https://demo-formbricks-app.tfnfm9.easypanel.host/s/clzhfydg5000k5rpsirzn6dbk"
+            href="/contact"
             className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
             prefetch={false}
           >
